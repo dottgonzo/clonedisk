@@ -1,0 +1,297 @@
+<!doctype html>
+
+<html>
+
+<head>
+    <meta charset="utf-8">
+
+    <title>Disk Cloner</title>
+
+    <script src="js/jquery-2.2.0.min.js"></script>
+
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>
+    <!--
+  <link rel="stylesheet" href="css/styles.css?v=1.0">
+
+  -->
+    <style>
+        h4 {
+            text-align: center;
+        }
+        
+        nav {
+            margin-bottom: 30px
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <div class="nav-wrapper">
+            <a href="" class="brand-logo">Clone Disk</a>
+            <ul id="nav-mobile" class="right">
+                <li id="modebackup" class="active"><a href="javascript:clonemode('backup')">backup</a></li>
+                <li id="moderestore"><a href="javascript:clonemode('restore')">restore</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="row">
+        <form class="col s12">
+            <div class="row">
+                <div class="col s3">
+                <h4>Source</h4>
+                        </div>
+
+
+
+
+                <div class="file-field input-field col s9">
+                    <div id="filesource" style="display:none">
+                        <div class="btn" id="filesourcebutton">
+                            <span>File</span>
+                            <input id="filesourceinput" type="file">
+                        </div>
+                        <div class="file-path-wrapper">
+                            <input class="file-path validate" type="text">
+                        </div>
+                    </div>
+                    <div id="disksource" style="display:block">
+                        <select class="disks" id="disksourceinput">
+                            <option value="" disabled>select disk</option>
+
+
+                        </select>
+                    </div>
+
+                </div>
+
+
+
+
+
+            </div>
+
+            <div class="row">
+
+                <div class="col s3">
+                <h4>Destination</h4>
+                        </div>
+                <div class="file-field input-field col s9">
+                    <div id="folderdest" style="display:block">
+                        <div class="input-field col s6">
+                            <div class="btn" id="folderdestbutton">
+                                <span>Folder</span>
+                                <input id="folderdestinput" type="file" webkitdirectory directory>
+                            </div>
+                            <div class="file-path-wrapper">
+                                <input class="file-path validate" type="text">
+                            </div>
+                        </div>
+                        <div class="input-field col s6">
+                            <input id="dest_image_name" type="text" class="validate" placeholder="image.img" disabled>
+                            <label for="dest_image_name">filename</label>
+                        </div>
+
+                    </div>
+
+                    <div id="diskdest" style="display:none">
+                        <select class="disks" id="diskdestinput">
+
+                            <option value="" disabled>select disk</option>
+                        </select>
+                    </div>
+
+                </div>
+
+
+
+
+            </div>
+            <div class="input-field col s2">
+                <a id="buttongo" class="waves-effect waves-light btn disabled" href="javascript:clonedisk()">clone</a>
+            </div>
+                       <div class="input-field col s2">
+                <a id="buttonstop" class="waves-effect waves-light btn disabled" href="javascript:clonedisk()">stop</a>
+            </div>
+            <div class="input-field col s8">
+                <div id="progress" class="progress" style="display:none">
+                    <div class="indeterminate"></div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+    <script src="../lib/index.js"></script>
+    <script>
+        var source=false;
+        var dest=false;
+        var cloning=false;
+        
+    $("#folderdestinput").change(function(){
+        if($("#folderdestinput").val()){
+            $("#dest_image_name").prop("disabled",false)
+            
+            if(dest){
+                dest=$("#folderdestinput").val()+"/"+$("#dest_image_name").val();
+            }
+            
+        } else{
+           $("#dest_image_name").prop("disabled",true) 
+        }
+        
+        
+        
+        
+    })
+        $("#disksourceinput").change(function(){
+        if($("#disksourceinput").val()){
+
+                           source=$("#disksourceinput").val(); 
+                                 if(dest){
+        $( "#buttongo" ).toggleClass("disabled", false);
+      }
+        } else{
+                           source=false; 
+                                   $( "#buttongo" ).toggleClass("disabled", true);
+           
+        }
+        
+    })
+    
+            $("#diskdestinput").change(function(){
+        if($("#diskdestinput").val()){
+
+                           dest=$("#diskdestinput").val(); 
+                                 if(source){
+        $( "#buttongo" ).toggleClass("disabled", false);
+      }
+        } else{
+                           dest=false; 
+                                   $( "#buttongo" ).toggleClass("disabled", true);
+           
+        }
+        
+    })
+    
+    
+            $("#filesourceinput").change(function(){
+        if($("#filesourceinput").val()){
+
+                           source=$("#filesourceinput").val(); 
+                                 if(dest){
+        $( "#buttongo" ).toggleClass("disabled", false);
+      }
+        } else{
+                           source=false; 
+                                   $( "#buttongo" ).toggleClass("disabled", true);
+           
+        }
+        
+    })
+    
+    
+    
+    
+  $("#dest_image_name").keyup(function(){
+      if($("#dest_image_name").val()){
+                dest=$("#folderdestinput").val()+"/"+$("#dest_image_name").val();
+
+      if(source){
+        $( "#buttongo" ).toggleClass("disabled", false);
+      }
+      } else{
+                          dest=false;
+                                  $( "#buttongo" ).toggleClass("disabled", true);
+      }
+
+  })
+  
+  
+  function clonemode(mode){
+      if(cloning){
+          alert("operation is in progress")
+      } else{
+          
+   
+              source=false;
+        dest=false;
+
+      if(mode=="backup"){
+                    // patch folder clear
+          location.reload();
+     //               $("#modebackup").attr("class","active");
+                   //                     $("#moderestore").attr("class","");
+     //     $("#filesource").css("display","none");
+      //   $("#disksource").css("display","block");
+         
+      //   $("#diskdest").css("display","none");
+      //   $("#folderdest").css("display","block");
+         
+         //        $("#dest_image_name").prop("disabled",true);
+        // $( "#buttongo" ).toggleClass("disabled", true);
+        
+         
+      } else{
+          
+        $("#dest_image_name").prop("disabled",true);
+        $( "#buttongo" ).toggleClass("disabled", true);
+        
+                              $("#modebackup").attr("class","");
+                                        $("#moderestore").attr("class","active");
+         $("#filesource").css("display","block");
+         $("#disksource").css("display","none");
+         
+                  $("#diskdest").css("display","block");
+         $("#folderdest").css("display","none");
+      }
+         }
+  }
+  
+  function clonedisk(){
+      
+           $( "#folderdestbutton" ).toggleClass("disabled", true);
+     $( "#filesourcebutton" ).toggleClass("disabled", true);
+      $("input").prop("disabled",true)
+              $( "#buttongo" ).toggleClass("disabled", true);
+                    $( "#buttonstop" ).toggleClass("disabled", false);
+      source=source.replace("//","/")
+            dest=dest.replace("//","/")
+            
+            if(dest.split("dev/").length<2 && dest.split(".im").length<2){
+                            dest=dest+".img"
+            }
+            
+cloning=true;
+                      $("#progress").css("display","block");
+                      
+                      
+                      
+            console.log("cloning from: "+source+" to: "+dest);
+            
+            clone(source,dest)
+            
+            
+            
+  }
+  
+  
+          $(document).ready(function() {
+            var disks=lsDisks();
+            for(var i=0;i<disks.length;i++){
+                $(".disks").append('<option value="'+disks[i].disk+'">'+disks[i].disk+'</option>');
+            }
+    $('select').material_select();
+  });
+  
+  function endcloning(){
+                            $("#progress").css("display","none");
+  }
+    </script>
+</body>
+
+</html>

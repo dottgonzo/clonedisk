@@ -2,9 +2,16 @@
   "name": "clonedisk",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "html/index.html",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "window": {
+    "frame": true,
+    "toolbar": true,
+    "width": 720,
+    "resizable": false,
+    "height": 370
   },
   "repository": {
     "type": "git",
@@ -32,6 +39,9 @@
     "mocha": "^2.3.4"
   },
   "dependencies": {
-    "bluebird": "^3.1.1"
+    "bluebird": "^3.1.1",
+    "ddisk": "0.0.2",
+    "ls-disks": "^1.0.5",
+    "path-exists": "^2.1.0"
   }
 }
