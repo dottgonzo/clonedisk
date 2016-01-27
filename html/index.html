@@ -43,8 +43,8 @@
         <form class="col s12">
             <div class="row">
                 <div class="col s3">
-                <h4>Source</h4>
-                        </div>
+                    <h4>Source</h4>
+                </div>
 
 
 
@@ -78,8 +78,8 @@
             <div class="row">
 
                 <div class="col s3">
-                <h4>Destination</h4>
-                        </div>
+                    <h4>Destination</h4>
+                </div>
                 <div class="file-field input-field col s9">
                     <div id="folderdest" style="display:block">
                         <div class="input-field col s6">
@@ -114,7 +114,7 @@
             <div class="input-field col s2">
                 <a id="buttongo" class="waves-effect waves-light btn disabled" href="javascript:clonedisk()">clone</a>
             </div>
-                       <div class="input-field col s2">
+            <div class="input-field col s2">
                 <a id="buttonstop" class="waves-effect waves-light btn disabled" href="javascript:clonedisk()">stop</a>
             </div>
             <div class="input-field col s8">
@@ -273,7 +273,13 @@ cloning=true;
                       
             console.log("cloning from: "+source+" to: "+dest);
             
-            clone(source,dest)
+            clone(source,dest).then(function(){
+                alert("cloning OK");
+                endcloning();
+            }).catch(function(err){
+                alert(err);
+                endcloning();
+            })
             
             
             
@@ -290,6 +296,12 @@ cloning=true;
   
   function endcloning(){
                             $("#progress").css("display","none");
+                                       $( "#folderdestbutton" ).toggleClass("disabled", false);
+     $( "#filesourcebutton" ).toggleClass("disabled", false);
+      $("input").prop("disabled",false)
+              $( "#buttongo" ).toggleClass("disabled", false);
+                    $( "#buttonstop" ).toggleClass("disabled", true);
+                            
   }
     </script>
 </body>
