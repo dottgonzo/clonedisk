@@ -8,7 +8,7 @@
   },
   "window": {
     "frame": true,
-    "toolbar": true,
+    "toolbar": false,
     "width": 720,
     "resizable": false,
     "height": 370
