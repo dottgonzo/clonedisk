@@ -287,7 +287,7 @@ cloning=true;
   
   
           $(document).ready(function() {
-            var disks=lsDisks();
+            var disks=lsDisks.all();
             for(var i=0;i<disks.length;i++){
                 $(".disks").append('<option value="'+disks[i].disk+'">'+disks[i].disk+'</option>');
             }
