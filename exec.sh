@@ -1,3 +1,6 @@
-#! /bin/sh
+#! /bin/bash
 
-sudo nw .
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )" 
+
+
+sudo nw DIR
