@@ -1,3 +1,3 @@
 #! /bin/sh
 
-sudo node ./index
+sudo nw .
